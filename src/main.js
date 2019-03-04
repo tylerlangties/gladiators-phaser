@@ -8,10 +8,10 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
-  parent: 'game-container',
+  parent: "game-container",
   pixelArt: true,
   physics: {
-    default: 'arcade',
+    default: "arcade",
     arcade: {
       gravity: { y: 0 }
     }
@@ -29,32 +29,28 @@ let player;
 let showDebug = false;
 
 function preload() {
-  this.load.image('tiles', './assets/magecity.png');
-  this.load.tilemapTiledJSON('map', './assets/mage-map.json');
+  this.load.image("tiles", "./assets/magecity.png");
+  this.load.tilemapTiledJSON("map", "./assets/mage-map.json");
 
   // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
   // the player animations (walking left, walking right, etc.) in one image. For more info see:
   //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
   // If you don't use an atlas, you can do the same thing with a spritesheet, see:
   //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
-  this.load.atlas(
-    'atlas',
-    'https://www.mikewesthad.com/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.png',
-    'https://www.mikewesthad.com/phaser-3-tilemap-blog-posts/post-1/assets/atlas/atlas.json'
-  );
+  this.load.atlas("atlas", "../assets/body.png", "../assets/body.json");
 }
 
 function create() {
-  const map = this.make.tilemap({ key: 'map' });
+  const map = this.make.tilemap({ key: "map" });
 
   // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
   // Phaser's cache (i.e. the name you used in preload)
-  const tileset = map.addTilesetImage('mage-tileset', 'tiles');
+  const tileset = map.addTilesetImage("mage-tileset", "tiles");
 
   // Parameters: layer name (or index) from Tiled, tileset, x, y
-  const belowLayer = map.createStaticLayer('Below Player', tileset, 0, 0);
-  const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
-  const aboveLayer = map.createStaticLayer('Above Player', tileset, 0, 0);
+  const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
+  const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
+  const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
   worldLayer.setCollisionByProperty({ collides: true });
 
@@ -66,79 +62,77 @@ function create() {
   // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
   // collision shapes. In the tmx file, there's an object layer with a point named "Spawn Point"
   const spawnPoint = map.findObject(
-    'Objects',
-    obj => obj.name === 'Spawn Point'
+    "Objects",
+    obj => obj.name === "Spawn Point"
   );
 
   // Create a sprite with physics enabled via the physics system. The image used for the sprite has
   // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
   player = this.physics.add
-    .sprite(spawnPoint.x, spawnPoint.y, 'atlas', 'misa-front')
-    .setSize(30, 40)
-    .setOffset(0, 24);
+    .sprite(spawnPoint.x, spawnPoint.y, "atlas", "idle-down")
+    .setSize(32, 32);
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
-
   // Create the player's walking animations from the texture atlas. These are stored in the global
   // animation manager so any sprite can access them.
   const anims = this.anims;
   anims.create({
-    key: 'misa-left-walk',
-    frames: anims.generateFrameNames('atlas', {
-      prefix: 'misa-left-walk.',
+    key: "run-left",
+    frames: anims.generateFrameNames("atlas", {
+      prefix: "run-left.",
       start: 0,
-      end: 3,
+      end: 4,
       zeroPad: 3
     }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'misa-right-walk',
-    frames: anims.generateFrameNames('atlas', {
-      prefix: 'misa-right-walk.',
-      start: 0,
-      end: 3,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'misa-front-walk',
-    frames: anims.generateFrameNames('atlas', {
-      prefix: 'misa-front-walk.',
-      start: 0,
-      end: 3,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'misa-back-walk',
-    frames: anims.generateFrameNames('atlas', {
-      prefix: 'misa-back-walk.',
-      start: 0,
-      end: 3,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: 'misa-back-walk',
-    frames: anims.generateFrameNames('atlas', {
-      prefix: 'misa-back-walk.',
-      start: 0,
-      end: 1,
-      zeroPad: 1
-    }),
-    frameRate: 10,
+    frameRate: 12,
     repeat: -1
   });
 
+  anims.create({
+    key: "run-right",
+    frames: anims.generateFrameNames("atlas", {
+      prefix: "run-right.",
+      start: 0,
+      end: 4,
+      zeroPad: 3
+    }),
+    frameRate: 12,
+    repeat: -1
+  });
+  anims.create({
+    key: "run-down",
+    frames: anims.generateFrameNames("atlas", {
+      prefix: "run-down.",
+      start: 0,
+      end: 4,
+      zeroPad: 3
+    }),
+    frameRate: 12,
+    repeat: -1
+  });
+  anims.create({
+    key: "run-up",
+    frames: anims.generateFrameNames("atlas", {
+      prefix: "run-up.",
+      start: 0,
+      end: 4,
+      zeroPad: 3
+    }),
+    frameRate: 12,
+    repeat: -1
+  });
+  anims.create({
+    key: "push-right",
+    frames: anims.generateFrameNames("atlas", {
+      prefix: "push-right.",
+      start: 0,
+      end: 1,
+      zeroPad: 3
+    }),
+    frameRate: 12,
+    repeat: -1
+  });
   const camera = this.cameras.main;
   camera.startFollow(player);
   camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -148,7 +142,7 @@ function create() {
   // Help text that has a "fixed" position on the screen
 
   // Debug graphics
-  this.input.keyboard.once('keydown_F', event => {
+  this.input.keyboard.once("keydown_F", event => {
     // Turn on physics debugging to show player's hitbox
     this.physics.world.createDebugGraphic();
 
@@ -205,23 +199,30 @@ function update(time, delta) {
 
   // Normalize and scale the velocity so that player can't move faster along a diagonal
   player.body.velocity.normalize().scale(speed);
-
+  // if (cursors.left.isDown) {
+  //   player.anims.play("run-left", true);
+  // } else {
+  //   player.anims.stop();
+  // }
   // Update the animation last and give left/right animations precedence over up/down animations
   if (cursors.left.isDown) {
-    player.anims.play('misa-left-walk', true);
+    player.anims.play("run-left", true);
   } else if (cursors.right.isDown) {
-    player.anims.play('misa-right-walk', true);
+    player.anims.play("run-right", true);
   } else if (cursors.up.isDown) {
-    player.anims.play('misa-back-walk', true);
+    player.anims.play("run-up", true);
   } else if (cursors.down.isDown) {
-    player.anims.play('misa-front-walk', true);
+    player.anims.play("run-down", true);
   } else {
     player.anims.stop();
-
-    // If we were moving, pick and idle frame to use
-    if (prevVelocity.x < 0) player.setTexture('atlas', 'misa-left');
-    else if (prevVelocity.x > 0) player.setTexture('atlas', 'misa-right');
-    else if (prevVelocity.y < 0) player.setTexture('atlas', 'misa-back');
-    else if (prevVelocity.y > 0) player.setTexture('atlas', 'misa-front');
   }
+  //   // If we were moving, pick and idle frame to use
+  if (!cursors.left.isDown && prevVelocity.x < 0)
+    player.setTexture("atlas", "idle-left");
+  else if (!cursors.right.isDown && prevVelocity.x > 0)
+    player.setTexture("atlas", "idle-right");
+  else if (!cursors.up.isDown && prevVelocity.y < 0)
+    player.setTexture("atlas", "idle-up");
+  else if (!cursors.down.isDown && prevVelocity.y > 0)
+    player.setTexture("atlas", "idle-down");
 }
