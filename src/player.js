@@ -105,6 +105,7 @@ export default class Player {
       .setSize(32, 32);
 
     this.sprite.anims.play('character-walk-down');
+    this.sprite.body.setVelocity(0);
 
     this.keys = scene.input.keyboard.createCursorKeys();
   }
@@ -116,6 +117,7 @@ export default class Player {
     const sprite = this.sprite;
     const speed = 300;
     const prevVelocity = sprite.body.velocity.clone();
+    sprite.body.setVelocity(0);
 
     if (keys.left.isDown) {
       sprite.body.setVelocityX(-speed);

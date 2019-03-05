@@ -325,22 +325,22 @@ const game = new Phaser.Game(config); // const config = {
 //   camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 //   cursors = this.input.keyboard.createCursorKeys();
 //   // Help text that has a "fixed" position on the screen
-//   // Debug graphics
-//   this.input.keyboard.once('keydown_F', event => {
-//     // Turn on physics debugging to show player's hitbox
-//     this.physics.world.createDebugGraphic();
-//     console.log(game);
-//     // Create worldLayer collision graphic above the player, but below the help text
-//     const graphics = this.add
-//       .graphics()
-//       .setAlpha(0.75)
-//       .setDepth(20);
-//     worldLayer.renderDebug(graphics, {
-//       tileColor: null, // Color of non-colliding tiles
-//       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-//       faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-//     });
+// // Debug graphics
+// this.input.keyboard.once('keydown_F', event => {
+//   // Turn on physics debugging to show player's hitbox
+//   this.physics.world.createDebugGraphic();
+//   console.log(game);
+//   // Create worldLayer collision graphic above the player, but below the help text
+//   const graphics = this.add
+//     .graphics()
+//     .setAlpha(0.75)
+//     .setDepth(20);
+//   worldLayer.renderDebug(graphics, {
+//     tileColor: null, // Color of non-colliding tiles
+//     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+//     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
 //   });
+// });
 // }
 // function update(time, delta) {
 //   let speed = 200;
@@ -556,6 +556,7 @@ class Player {
     });
     this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'Character_Down.000.png').setSize(32, 32);
     this.sprite.anims.play('character-walk-down');
+    this.sprite.body.setVelocity(0);
     this.keys = scene.input.keyboard.createCursorKeys();
   }
 
@@ -568,6 +569,7 @@ class Player {
     const sprite = this.sprite;
     const speed = 300;
     const prevVelocity = sprite.body.velocity.clone();
+    sprite.body.setVelocity(0);
 
     if (keys.left.isDown) {
       sprite.body.setVelocityX(-speed);
@@ -661,7 +663,24 @@ class TownScene extends Phaser.Scene {
     aboveLayer.setDepth(10);
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
     this.player = new _player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
-    const camera = this.cameras.main; // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
+    this.physics.add.collider(this.player.sprite, worldLayer);
+    const camera = this.cameras.main; // Debug graphics
+
+    this.input.keyboard.once('keydown_F', event => {
+      // Turn on physics debugging to show player's hitbox
+      this.physics.world.createDebugGraphic();
+      console.log(this.player, worldLayer); // Create worldLayer collision graphic above the player, but below the help text
+
+      const graphics = this.add.graphics().setAlpha(0.75).setDepth(20);
+      worldLayer.renderDebug(graphics, {
+        tileColor: null,
+        // Color of non-colliding tiles
+        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+        // Color of colliding tiles
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+
+      });
+    }); // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
@@ -682,7 +701,7 @@ class TownScene extends Phaser.Scene {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/tylerlangties/projects/gamedev/tuxmon-walker/src/main.js */"./src/main.js");
+module.exports = __webpack_require__(/*! /Users/tylerlangties/projects/gamedev/gladiators-phaser/src/main.js */"./src/main.js");
 
 
 /***/ })

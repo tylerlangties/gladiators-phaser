@@ -49,8 +49,25 @@ export default class TownScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
-
+    this.physics.add.collider(this.player.sprite, worldLayer);
     const camera = this.cameras.main;
+
+    // Debug graphics
+    this.input.keyboard.once('keydown_F', event => {
+      // Turn on physics debugging to show player's hitbox
+      this.physics.world.createDebugGraphic();
+      console.log(this.player, worldLayer);
+      // Create worldLayer collision graphic above the player, but below the help text
+      const graphics = this.add
+        .graphics()
+        .setAlpha(0.75)
+        .setDepth(20);
+      worldLayer.renderDebug(graphics, {
+        tileColor: null, // Color of non-colliding tiles
+        collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+      });
+    });
 
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
