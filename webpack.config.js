@@ -16,7 +16,7 @@ var definePlugin = new webpack.DefinePlugin({
 
 module.exports = {
   entry: {
-    app: [path.resolve(__dirname, "src/main.js")],
+    app: [path.resolve(__dirname, "src/index.js")],
     vendor: ["phaser"]
   },
   devtool: "cheap-source-map",
