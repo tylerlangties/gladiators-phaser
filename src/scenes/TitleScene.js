@@ -10,9 +10,9 @@ class TitleScene extends Phaser.Scene {
 
     this.registry.set("restartScene", false);
     this.registry.set("attractMode", true);
-    this.title = this.add.bitmapText(360, 250, "font", "GLADIATORS", 8);
+    this.title = this.add.bitmapText(340, 250, "font", "GLADIATORS", 12);
 
-    this.pressX = this.add.bitmapText(338, 265, "font", "PRESS X TO START", 8);
+    this.pressX = this.add.bitmapText(305, 270, "font", "PRESS X TO START", 12);
     this.blink = 1000;
 
     this.startKey = this.input.keyboard.addKey(
