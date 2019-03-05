@@ -15,6 +15,11 @@ var definePlugin = new webpack.DefinePlugin({
 });
 
 module.exports = {
+  resolve: {
+    alias: {
+      src: "./src"
+    }
+  },
   entry: {
     app: [path.resolve(__dirname, "src/main.js")],
     vendor: ["phaser"]
