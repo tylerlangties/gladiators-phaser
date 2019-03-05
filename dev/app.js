@@ -131,10 +131,10 @@ const game = new Phaser.Game(config);
 
 /***/ }),
 
-/***/ "./src/player.js":
-/*!***********************!*\
-  !*** ./src/player.js ***!
-  \***********************/
+/***/ "./src/player/player.js":
+/*!******************************!*\
+  !*** ./src/player/player.js ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -413,7 +413,7 @@ class TitleScene extends Phaser.Scene {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TownScene; });
-/* harmony import */ var _player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player.js */ "./src/player.js");
+/* harmony import */ var _player_player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player/player.js */ "./src/player/player.js");
 
 class TownScene extends Phaser.Scene {
   constructor() {
@@ -443,7 +443,7 @@ class TownScene extends Phaser.Scene {
 
     aboveLayer.setDepth(10);
     const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
-    this.player = new _player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
+    this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
     this.physics.add.collider(this.player.sprite, worldLayer);
     const camera = this.cameras.main; // Debug graphics
 

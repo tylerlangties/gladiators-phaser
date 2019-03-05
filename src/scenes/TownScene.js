@@ -1,4 +1,4 @@
-import Player from "../player.js";
+import Player from "../player/player.js";
 
 export default class TownScene extends Phaser.Scene {
   constructor() {
