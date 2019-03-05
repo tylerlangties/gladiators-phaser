@@ -1,4 +1,5 @@
 import BootScene from "./scenes/BootScene.js";
+import TitleScene from "./scenes/TitleScene.js";
 import TownScene from "./scenes/TownScene.js";
 const config = {
   type: Phaser.AUTO,
@@ -6,7 +7,7 @@ const config = {
   height: 600,
   parent: "game-container",
   pixelArt: true,
-  scene: [BootScene, TownScene],
+  scene: [BootScene, TitleScene, TownScene],
   physics: {
     default: "arcade",
     arcade: {

@@ -24,7 +24,7 @@ class BootScene extends Phaser.Scene {
       // prepare all animations, defined in a separate file
       progress.destroy();
       console.log("complete");
-      this.scene.start("TownScene");
+      this.scene.start("TitleScene");
     });
 
     this.load.image("tiles", "./assets/magecity.png");

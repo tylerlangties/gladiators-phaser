@@ -106,7 +106,9 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scenes/BootScene.js */ "./src/scenes/BootScene.js");
-/* harmony import */ var _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scenes/TownScene.js */ "./src/scenes/TownScene.js");
+/* harmony import */ var _scenes_TitleScene_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scenes/TitleScene.js */ "./src/scenes/TitleScene.js");
+/* harmony import */ var _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scenes/TownScene.js */ "./src/scenes/TownScene.js");
+
 
 
 const config = {
@@ -115,7 +117,7 @@ const config = {
   height: 600,
   parent: "game-container",
   pixelArt: true,
-  scene: [_scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__["default"], _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  scene: [_scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__["default"], _scenes_TitleScene_js__WEBPACK_IMPORTED_MODULE_1__["default"], _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
   physics: {
     default: "arcade",
     arcade: {
@@ -324,7 +326,7 @@ class BootScene extends Phaser.Scene {
       // prepare all animations, defined in a separate file
       progress.destroy();
       console.log("complete");
-      this.scene.start("TownScene");
+      this.scene.start("TitleScene");
     });
     this.load.image("tiles", "./assets/magecity.png");
     this.load.tilemapTiledJSON("map", "./assets/mage-map.json");
@@ -335,6 +337,69 @@ class BootScene extends Phaser.Scene {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (BootScene);
+
+/***/ }),
+
+/***/ "./src/scenes/TitleScene.js":
+/*!**********************************!*\
+  !*** ./src/scenes/TitleScene.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class TitleScene extends Phaser.Scene {
+  constructor() {
+    super({
+      key: "TitleScene"
+    });
+  }
+
+  preload() {}
+
+  create() {
+    this.scene.bringToTop();
+    this.registry.set("restartScene", false);
+    this.registry.set("attractMode", true);
+    this.title = this.add.bitmapText(360, 250, "font", "GLADIATORS", 8);
+    this.pressX = this.add.bitmapText(338, 265, "font", "PRESS X TO START", 8);
+    this.blink = 1000;
+    this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+  }
+
+  update(time, delta) {
+    if (this.registry.get("restartScene")) {
+      this.restartScene();
+    }
+
+    this.blink -= delta;
+
+    if (this.blink < 0) {
+      this.pressX.alpha = this.pressX.alpha === 1 ? 0 : 1;
+      this.blink = 500;
+    }
+
+    if (this.startKey.isDown) {
+      this.startGame();
+    }
+  }
+
+  startGame() {
+    this.scene.stop("TownScene");
+    this.scene.start("TownScene");
+  }
+
+  restartScene() {
+    this.scene.stop("TownScene");
+    this.scene.launch("TownScene");
+    this.scene.bringToTop();
+    this.registry.set("restartScene", false);
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (TitleScene);
 
 /***/ }),
 
