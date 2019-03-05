@@ -1,40 +1,24 @@
-import Player from '../player.js';
+import Player from "../player.js";
 
 export default class TownScene extends Phaser.Scene {
   constructor() {
-    super();
+    super({
+      key: "TownScene"
+    });
   }
-  preload() {
-    this.load.image('tiles', './assets/magecity.png');
-    this.load.tilemapTiledJSON('map', './assets/mage-map.json');
-    // this.load.atlas(
-    //   'weapon',
-    //   '../assets/weapon-anims.png',
-    //   '../assets/weapon-anims.json'
-    // );
-    // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
-    // the player animations (walking left, walking right, etc.) in one image. For more info see:
-    //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
-    // If you don't use an atlas, you can do the same thing with a spritesheet, see:
-    //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
-    this.load.atlas(
-      'atlas',
-      '../assets/player-anim.png',
-      '../assets/player-anim.json'
-    );
-  }
+  preload() {}
 
   create() {
-    const map = this.make.tilemap({ key: 'map' });
+    const map = this.make.tilemap({ key: "map" });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    const tileset = map.addTilesetImage('mage-tileset', 'tiles');
+    const tileset = map.addTilesetImage("mage-tileset", "tiles");
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const belowLayer = map.createStaticLayer('Below Player', tileset, 0, 0);
-    const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
-    const aboveLayer = map.createStaticLayer('Above Player', tileset, 0, 0);
+    const belowLayer = map.createStaticLayer("Below Player", tileset, 0, 0);
+    const worldLayer = map.createStaticLayer("World", tileset, 0, 0);
+    const aboveLayer = map.createStaticLayer("Above Player", tileset, 0, 0);
 
     worldLayer.setCollisionByProperty({ collides: true });
 
@@ -44,8 +28,8 @@ export default class TownScene extends Phaser.Scene {
     aboveLayer.setDepth(10);
 
     const spawnPoint = map.findObject(
-      'Objects',
-      obj => obj.name === 'Spawn Point'
+      "Objects",
+      obj => obj.name === "Spawn Point"
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
@@ -53,7 +37,7 @@ export default class TownScene extends Phaser.Scene {
     const camera = this.cameras.main;
 
     // Debug graphics
-    this.input.keyboard.once('keydown_F', event => {
+    this.input.keyboard.once("keydown_F", event => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
       console.log(this.player, worldLayer);
