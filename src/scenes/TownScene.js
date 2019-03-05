@@ -1,4 +1,4 @@
-import Player from "../player.js";
+import Player from "../player/player.js";
 
 export default class TownScene extends Phaser.Scene {
   constructor() {
@@ -53,11 +53,35 @@ export default class TownScene extends Phaser.Scene {
       });
     });
 
+    // Create HUD
+    this.createHUD();
+
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
   }
   update(time, delta) {
     this.player.update();
+  }
+
+  createHUD() {
+    var rect = new Phaser.Geom.Rectangle(5, 5, 58, 28);
+
+    var graphics = this.add.graphics({
+      fillStyle: { color: 0x0000ff, alpha: 0.35 }
+    });
+
+    graphics.fillRectShape(rect);
+
+    graphics.setScrollFactor(0, 0);
+
+    const hud = this.add.bitmapText(10, 10, "font", "HEALTH", 8);
+    hud.setScrollFactor(0, 0);
+
+    this.health = {
+      pts: 0,
+      textObject: this.add.bitmapText(10, 20, "font", "100", 8)
+    };
+    this.health.textObject.setScrollFactor(0, 0);
   }
 }

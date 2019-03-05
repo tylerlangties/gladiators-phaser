@@ -106,7 +106,9 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./scenes/BootScene.js */ "./src/scenes/BootScene.js");
-/* harmony import */ var _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scenes/TownScene.js */ "./src/scenes/TownScene.js");
+/* harmony import */ var _scenes_TitleScene_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scenes/TitleScene.js */ "./src/scenes/TitleScene.js");
+/* harmony import */ var _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scenes/TownScene.js */ "./src/scenes/TownScene.js");
+
 
 
 const config = {
@@ -115,7 +117,7 @@ const config = {
   height: 600,
   parent: "game-container",
   pixelArt: true,
-  scene: [_scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__["default"], _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  scene: [_scenes_BootScene_js__WEBPACK_IMPORTED_MODULE_0__["default"], _scenes_TitleScene_js__WEBPACK_IMPORTED_MODULE_1__["default"], _scenes_TownScene_js__WEBPACK_IMPORTED_MODULE_2__["default"]],
   physics: {
     default: "arcade",
     arcade: {
@@ -129,10 +131,10 @@ const game = new Phaser.Game(config);
 
 /***/ }),
 
-/***/ "./src/player.js":
-/*!***********************!*\
-  !*** ./src/player.js ***!
-  \***********************/
+/***/ "./src/player/player.js":
+/*!******************************!*\
+  !*** ./src/player/player.js ***!
+  \******************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -144,105 +146,106 @@ class Player {
     this.scene = scene;
     const anims = scene.anims;
     anims.create({
-      key: 'character-walk-down',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_Down.',
+      key: "character-walk-down",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_Down.",
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: 'character-walk-left',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_Left.',
+      key: "character-walk-left",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_Left.",
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: 'character-walk-up',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_Up.',
+      key: "character-walk-up",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_Up.",
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: 'character-walk-right',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_Right.',
+      key: "character-walk-right",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_Right.",
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: 'character-slash-left',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_SlashUpLeft.',
+      key: "character-slash-left",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_SlashUpLeft.",
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
     });
     anims.create({
-      key: 'character-slash-right',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_SlashDownRight.',
+      key: "character-slash-right",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_SlashDownRight.",
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
     });
     anims.create({
-      key: 'character-slash-down',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_SlashDownLeft.',
+      key: "character-slash-down",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_SlashDownLeft.",
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
     });
     anims.create({
-      key: 'character-slash-up',
-      frames: anims.generateFrameNames('atlas', {
-        prefix: 'Character_SlashUpRight.',
+      key: "character-slash-up",
+      frames: anims.generateFrameNames("atlas", {
+        prefix: "Character_SlashUpRight.",
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: '.png'
+        suffix: ".png"
       }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
     });
-    this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'Character_Down.000.png').setSize(32, 32);
-    this.sprite.anims.play('character-walk-down');
+    this.sprite = scene.physics.add.sprite(x, y, "atlas", "Character_Down.000.png").setSize(32, 32);
+    this.sprite.anims.play("character-walk-down");
     this.sprite.body.setVelocity(0);
     this.keys = scene.input.keyboard.createCursorKeys();
+    this.keys.spaceBar = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
   freeze() {
@@ -254,18 +257,22 @@ class Player {
     const sprite = this.sprite;
     const speed = 300;
     const prevVelocity = sprite.body.velocity.clone();
-    sprite.body.setVelocity(0);
+    sprite.body.setVelocity(0); // Horizontal movement
 
     if (keys.left.isDown) {
       sprite.body.setVelocityX(-speed);
-    } else if (keys.right.isDown) {
+    }
+
+    if (keys.right.isDown) {
       sprite.body.setVelocityX(speed);
     } // Vertical movement
 
 
     if (keys.up.isDown) {
       sprite.body.setVelocityY(-speed);
-    } else if (keys.down.isDown) {
+    }
+
+    if (keys.down.isDown) {
       sprite.body.setVelocityY(speed);
     } // Normalize and scale the velocity so that player can't move faster along a diagonal
 
@@ -273,22 +280,36 @@ class Player {
     sprite.body.velocity.normalize().scale(speed); // Update the animation last and give left/right animations precedence over up/down animations
 
     if (keys.left.isDown) {
-      sprite.anims.play('character-walk-left', true);
+      sprite.anims.play("character-walk-left", true);
     } else if (keys.right.isDown) {
-      sprite.anims.play('character-walk-right', true);
+      sprite.anims.play("character-walk-right", true);
     } else if (keys.up.isDown) {
-      sprite.anims.play('character-walk-up', true);
+      sprite.anims.play("character-walk-up", true);
     } else if (keys.down.isDown) {
-      sprite.anims.play('character-walk-down', true);
+      sprite.anims.play("character-walk-down", true);
+    } else if (keys.spaceBar.isDown) {
+      this.attack();
     } else {
       sprite.anims.stop(); // If we were moving, pick and idle frame to use
 
-      if (prevVelocity.x < 0) sprite.setTexture('atlas', 'Character_Left.000.png');else if (prevVelocity.x > 0) sprite.setTexture('atlas', 'Character_Right.000.png');else if (prevVelocity.y < 0) sprite.setTexture('atlas', 'Character_Up.000.png');else if (prevVelocity.y > 0) sprite.setTexture('atlas', 'Character_Down.000.png');
+      if (prevVelocity.x < 0) sprite.setTexture("atlas", "Character_Left.000.png");else if (prevVelocity.x > 0) sprite.setTexture("atlas", "Character_Right.000.png");else if (prevVelocity.y < 0) sprite.setTexture("atlas", "Character_Up.000.png");else if (prevVelocity.y > 0) sprite.setTexture("atlas", "Character_Down.000.png");
     }
   }
 
   destroy() {
     this.sprite.destroy();
+  }
+
+  attack() {
+    if (this.keys.spaceBar.isDown && this.sprite.body.facing === 13) {
+      this.sprite.anims.play("character-slash-left", true);
+    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 14) {
+      this.sprite.anims.play("character-slash-right", true);
+    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 11) {
+      this.sprite.anims.play("character-slash-up", true);
+    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 12) {
+      this.sprite.anims.play("character-slash-down", true);
+    }
   }
 
 }
@@ -324,7 +345,7 @@ class BootScene extends Phaser.Scene {
       // prepare all animations, defined in a separate file
       progress.destroy();
       console.log("complete");
-      this.scene.start("TownScene");
+      this.scene.start("TitleScene");
     });
     this.load.image("tiles", "./assets/magecity.png");
     this.load.tilemapTiledJSON("map", "./assets/mage-map.json");
@@ -338,6 +359,69 @@ class BootScene extends Phaser.Scene {
 
 /***/ }),
 
+/***/ "./src/scenes/TitleScene.js":
+/*!**********************************!*\
+  !*** ./src/scenes/TitleScene.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class TitleScene extends Phaser.Scene {
+  constructor() {
+    super({
+      key: "TitleScene"
+    });
+  }
+
+  preload() {}
+
+  create() {
+    this.scene.bringToTop();
+    this.registry.set("restartScene", false);
+    this.registry.set("attractMode", true);
+    this.title = this.add.bitmapText(340, 250, "font", "GLADIATORS", 12);
+    this.pressX = this.add.bitmapText(305, 270, "font", "PRESS X TO START", 12);
+    this.blink = 1000;
+    this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+  }
+
+  update(time, delta) {
+    if (this.registry.get("restartScene")) {
+      this.restartScene();
+    }
+
+    this.blink -= delta;
+
+    if (this.blink < 0) {
+      this.pressX.alpha = this.pressX.alpha === 1 ? 0 : 1;
+      this.blink = 500;
+    }
+
+    if (this.startKey.isDown) {
+      this.startGame();
+    }
+  }
+
+  startGame() {
+    this.scene.stop("TownScene");
+    this.scene.start("TownScene");
+  }
+
+  restartScene() {
+    this.scene.stop("TownScene");
+    this.scene.launch("TownScene");
+    this.scene.bringToTop();
+    this.registry.set("restartScene", false);
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (TitleScene);
+
+/***/ }),
+
 /***/ "./src/scenes/TownScene.js":
 /*!*********************************!*\
   !*** ./src/scenes/TownScene.js ***!
@@ -348,7 +432,7 @@ class BootScene extends Phaser.Scene {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TownScene; });
-/* harmony import */ var _player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player.js */ "./src/player.js");
+/* harmony import */ var _player_player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player/player.js */ "./src/player/player.js");
 
 class TownScene extends Phaser.Scene {
   constructor() {
@@ -378,7 +462,7 @@ class TownScene extends Phaser.Scene {
 
     aboveLayer.setDepth(10);
     const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
-    this.player = new _player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
+    this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
     this.physics.add.collider(this.player.sprite, worldLayer);
     const camera = this.cameras.main; // Debug graphics
 
@@ -396,7 +480,9 @@ class TownScene extends Phaser.Scene {
         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
 
       });
-    }); // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
+    }); // Create HUD
+
+    this.createHUD(); // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     camera.startFollow(this.player.sprite);
@@ -404,6 +490,25 @@ class TownScene extends Phaser.Scene {
 
   update(time, delta) {
     this.player.update();
+  }
+
+  createHUD() {
+    var rect = new Phaser.Geom.Rectangle(5, 5, 58, 28);
+    var graphics = this.add.graphics({
+      fillStyle: {
+        color: 0x0000ff,
+        alpha: 0.35
+      }
+    });
+    graphics.fillRectShape(rect);
+    graphics.setScrollFactor(0, 0);
+    const hud = this.add.bitmapText(10, 10, "font", "HEALTH", 8);
+    hud.setScrollFactor(0, 0);
+    this.health = {
+      pts: 0,
+      textObject: this.add.bitmapText(10, 20, "font", "100", 8)
+    };
+    this.health.textObject.setScrollFactor(0, 0);
   }
 
 }
