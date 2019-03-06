@@ -1,15 +1,17 @@
-import BootScene from "./scenes/BootScene.js";
-import TitleScene from "./scenes/TitleScene.js";
-import TownScene from "./scenes/TownScene.js";
+import BootScene from './scenes/BootScene.js';
+import TitleScene from './scenes/TitleScene.js';
+import TownScene from './scenes/TownScene.js';
+import ArenaScene from './scenes/ArenaScene.js';
+
 const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
-  parent: "game-container",
+  parent: 'game-container',
   pixelArt: true,
-  scene: [BootScene, TitleScene, TownScene],
+  scene: [BootScene, TitleScene, TownScene, ArenaScene],
   physics: {
-    default: "arcade",
+    default: 'arcade',
     arcade: {
       gravity: { y: 0 }
     }

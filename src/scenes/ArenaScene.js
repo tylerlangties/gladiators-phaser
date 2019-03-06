@@ -3,23 +3,22 @@ import Player from '../player/player.js';
 export default class TownScene extends Phaser.Scene {
   constructor() {
     super({
-      key: 'TownScene'
+      key: 'ArenaScene'
     });
   }
   preload() {}
 
   create() {
-    this.playerHasReachedDoor = false;
-    const map = this.make.tilemap({ key: 'map' });
+    const map = this.make.tilemap({ key: 'arenamap' });
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     const tileset = map.addTilesetImage('mage-tileset', 'tiles');
 
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const belowLayer = map.createDynamicLayer('Below Player', tileset, 0, 0);
-    const worldLayer = map.createDynamicLayer('World', tileset, 0, 0);
-    const aboveLayer = map.createDynamicLayer('Above Player', tileset, 0, 0);
+    const belowLayer = map.createStaticLayer('Below Player', tileset, 0, 0);
+    const worldLayer = map.createStaticLayer('World', tileset, 0, 0);
+    const aboveLayer = map.createStaticLayer('Above Player', tileset, 0, 0);
 
     worldLayer.setCollisionByProperty({ collides: true });
 
@@ -54,23 +53,19 @@ export default class TownScene extends Phaser.Scene {
       });
     });
 
-    //Debugging for scene switching
-    this.input.keyboard.once('keydown_D', () => {
-      // this.scene.stop('TownScene');
-      // this.scene.start('ArenaScene');
-      console.log(this.player.sprite.x);
+    //Callback when player collides with door
+    worldLayer.setTileIndexCallback(307, () => {
+      worldLayer.setTileIndexCallback(200, null);
+      this.playerHasReachedDoor = false;
+      console.log('farts');
+      this.scene.stop('ArenaScene');
+      this.scene.start('TownScene');
     });
 
-    //Callback when player collides with door
-    worldLayer.setTileIndexCallback([327], () => {
-      worldLayer.setTileIndexCallback(200, null);
-      this.playerHasReachedDoor = true;
-      console.log('farts');
-      camera.fade(250, 0, 0, 0);
-      camera.once('camerafadeoutcomplete', () => {
-        this.scene.stop('TownScene');
-        this.scene.start('ArenaScene');
-      });
+    //Save for scene switch debugging
+    this.input.keyboard.once('keydown_D', event => {
+      // this.scene.stop('ArenaScene');
+      // this.scene.start('TownScene');
     });
 
     // Create HUD
@@ -81,8 +76,6 @@ export default class TownScene extends Phaser.Scene {
     camera.startFollow(this.player.sprite);
   }
   update(time, delta) {
-    if (this.playerHasReachedDoor) return;
-
     this.player.update();
   }
 

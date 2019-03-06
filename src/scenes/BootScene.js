@@ -1,14 +1,14 @@
 class BootScene extends Phaser.Scene {
   constructor() {
     super({
-      key: "BootScene"
+      key: 'BootScene'
     });
   }
   preload() {
     const progress = this.add.graphics();
 
     // Register a load progress event to show a load bar
-    this.load.on("progress", value => {
+    this.load.on('progress', value => {
       progress.clear();
       progress.fillStyle(0xffffff, 1);
       progress.fillRect(
@@ -20,25 +20,31 @@ class BootScene extends Phaser.Scene {
     });
 
     // Register a load complete event to launch the title screen when all files are loaded
-    this.load.on("complete", () => {
+    this.load.on('complete', () => {
       // prepare all animations, defined in a separate file
       progress.destroy();
-      console.log("complete");
-      this.scene.start("TitleScene");
+      console.log('complete');
+      this.scene.start('TitleScene');
     });
 
-    this.load.image("tiles", "./assets/magecity.png");
-    this.load.tilemapTiledJSON("map", "./assets/mage-map.json");
+    //Loading assets for Town Scene
+    this.load.image('tiles', './assets/magecity.png');
+    this.load.tilemapTiledJSON('map', './assets/town-scene.json');
+
+    this.load.tilemapTiledJSON('arenamap', './assets/Arena.json');
+
+    //Loading assets for players animations
     this.load.atlas(
-      "atlas",
-      "../assets/player-anim.png",
-      "../assets/player-anim.json"
+      'atlas',
+      '../assets/player-anim.png',
+      '../assets/player-anim.json'
     );
 
+    //Loading assets for title screen && HUD
     this.load.bitmapFont(
-      "font",
-      "assets/fonts/font.png",
-      "assets/fonts/font.fnt"
+      'font',
+      'assets/fonts/font.png',
+      'assets/fonts/font.fnt'
     );
   }
 }

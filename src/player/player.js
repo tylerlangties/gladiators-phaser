@@ -3,117 +3,121 @@ export default class Player {
     this.scene = scene;
     const anims = scene.anims;
     anims.create({
-      key: "character-walk-down",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_Down.",
+      key: 'character-walk-down',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_Down.',
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "character-walk-left",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_Left.",
+      key: 'character-walk-left',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_Left.',
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "character-walk-up",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_Up.",
+      key: 'character-walk-up',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_Up.',
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "character-walk-right",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_Right.",
+      key: 'character-walk-right',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_Right.',
         start: 0,
         end: 3,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
       frameRate: 10,
       repeat: -1
     });
     anims.create({
-      key: "character-slash-left",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_SlashUpLeft.",
+      key: 'character-slash-left',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_SlashUpLeft.',
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
-      frameRate: 10,
+      frameRate: 15,
       repeat: 0
     });
     anims.create({
-      key: "character-slash-right",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_SlashDownRight.",
+      key: 'character-slash-right',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_SlashDownRight.',
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
-      frameRate: 10,
+      frameRate: 15,
       repeat: 0
     });
     anims.create({
-      key: "character-slash-down",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_SlashDownLeft.",
+      key: 'character-slash-down',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_SlashDownLeft.',
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
-      frameRate: 10,
+      frameRate: 15,
       repeat: 0
     });
     anims.create({
-      key: "character-slash-up",
-      frames: anims.generateFrameNames("atlas", {
-        prefix: "Character_SlashUpRight.",
+      key: 'character-slash-up',
+      frames: anims.generateFrameNames('atlas', {
+        prefix: 'Character_SlashUpRight.',
         start: 0,
         end: 4,
         zeroPad: 3,
-        suffix: ".png"
+        suffix: '.png'
       }),
-      frameRate: 10,
+      frameRate: 15,
       repeat: 0
     });
 
     this.sprite = scene.physics.add
-      .sprite(x, y, "atlas", "Character_Down.000.png")
+      .sprite(x, y, 'atlas', 'Character_Down.000.png')
       .setSize(32, 32);
 
-    this.sprite.anims.play("character-walk-down");
+    this.sprite.setScale(1.4);
+
+    this.sprite.anims.play('character-walk-down');
     this.sprite.body.setVelocity(0);
 
     this.keys = scene.input.keyboard.createCursorKeys();
-    this.keys.spaceBar = scene.input.keyboard.addKey(
+    this.attackKey = scene.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
   }
+
   freeze() {
     this.sprite.body.moves = false;
   }
+
   update() {
     const keys = this.keys;
     const sprite = this.sprite;
@@ -142,43 +146,78 @@ export default class Player {
     sprite.body.velocity.normalize().scale(speed);
 
     // Update the animation last and give left/right animations precedence over up/down animations
-    if (keys.left.isDown) {
-      sprite.anims.play("character-walk-left", true);
-    } else if (keys.right.isDown) {
-      sprite.anims.play("character-walk-right", true);
-    } else if (keys.up.isDown) {
-      sprite.anims.play("character-walk-up", true);
-    } else if (keys.down.isDown) {
-      sprite.anims.play("character-walk-down", true);
-    } else if (keys.spaceBar.isDown) {
+    if (this.attackKey.isDown) {
       this.attack();
+    } else if (keys.left.isDown) {
+      this.playAnim('character-walk-left');
+    } else if (keys.right.isDown) {
+      this.playAnim('character-walk-right');
+    } else if (keys.up.isDown) {
+      this.playAnim('character-walk-up');
+    } else if (keys.down.isDown) {
+      this.playAnim('character-walk-down');
     } else {
-      sprite.anims.stop();
-
-      // If we were moving, pick and idle frame to use
-      if (prevVelocity.x < 0)
-        sprite.setTexture("atlas", "Character_Left.000.png");
-      else if (prevVelocity.x > 0)
-        sprite.setTexture("atlas", "Character_Right.000.png");
-      else if (prevVelocity.y < 0)
-        sprite.setTexture("atlas", "Character_Up.000.png");
-      else if (prevVelocity.y > 0)
-        sprite.setTexture("atlas", "Character_Down.000.png");
+      this.idle();
     }
   }
+
+  //player functions
+
+  // becomeIdle(prevVelocity) {
+  //   this.sprite.anims.stop();
+  //   // If we were moving, pick and idle frame to use
+  //   if (prevVelocity.x < 0)
+  //     this.sprite.setTexture('atlas', 'Character_Left.000.png');
+  //   else if (prevVelocity.x > 0)
+  //     this.sprite.setTexture('atlas', 'Character_Right.000.png');
+  //   else if (prevVelocity.y < 0)
+  //     this.sprite.setTexture('atlas', 'Character_Up.000.png');
+  //   else if (prevVelocity.y > 0)
+  //     this.sprite.setTexture('atlas', 'Character_Down.000.png');
+  // }
+
   destroy() {
     this.sprite.destroy();
   }
 
+  playAnim(key) {
+    this.sprite.anims.play(key, true);
+  }
+
+  playAttack(key) {
+    const anims = this.sprite.anims;
+    anims.play(key, true);
+
+    // this.sprite.anims.play('isLast', () => {
+    //   console.log('animation complete');
+    // });
+  }
+
   attack() {
-    if (this.keys.spaceBar.isDown && this.sprite.body.facing === 13) {
-      this.sprite.anims.play("character-slash-left", true);
-    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 14) {
-      this.sprite.anims.play("character-slash-right", true);
-    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 11) {
-      this.sprite.anims.play("character-slash-up", true);
-    } else if (this.keys.spaceBar.isDown && this.sprite.body.facing === 12) {
-      this.sprite.anims.play("character-slash-down", true);
+    //Prevents player from moving during attack anim
+    this.sprite.body.setVelocity(0);
+
+    if (this.sprite.body.facing === 13) {
+      this.playAttack('character-slash-left');
+    } else if (this.sprite.body.facing === 14) {
+      this.playAttack('character-slash-right');
+    } else if (this.sprite.body.facing === 11) {
+      this.playAttack('character-slash-up');
+    } else if (this.sprite.body.facing === 12) {
+      this.playAttack('character-slash-down');
     }
+  }
+
+  idle() {
+    this.sprite.anims.stop();
+    // If we were moving, pick an idle frame to use
+    if (this.sprite.body.facing === 13)
+      this.sprite.setTexture('atlas', 'Character_Left.000.png');
+    else if (this.sprite.body.facing === 14)
+      this.sprite.setTexture('atlas', 'Character_Right.000.png');
+    else if (this.sprite.body.facing === 11)
+      this.sprite.setTexture('atlas', 'Character_Up.000.png');
+    else if (this.sprite.body.facing === 12)
+      this.sprite.setTexture('atlas', 'Character_Down.000.png');
   }
 }
