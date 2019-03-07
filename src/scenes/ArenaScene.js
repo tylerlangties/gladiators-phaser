@@ -3,12 +3,21 @@ import SpikeBall from '../enemies/Spikeball';
 import HUD from '../HUD.js';
 import { ReactiveTest } from 'rx';
 
-export default class TownScene extends Phaser.Scene {
+export default class ArenaScene extends Phaser.Scene {
   constructor() {
     super({
       key: 'ArenaScene'
     });
   }
+
+  ArenaScene() {
+    Phaser.Scene.call(this, { key: 'arenascene' });
+  }
+  init(data) {
+    this.transferredData = data;
+    console.log(data);
+  }
+
   preload() {
     this.load.image('spikeball', '../../assets/spike-ball.png');
   }
@@ -39,14 +48,14 @@ export default class TownScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+    if (this.transferredData.health) {
+      this.player.health = this.transferredData.health;
+    }
     this.spikeball = new SpikeBall(this, 400, 400);
-    this.spikyball = new SpikeBall(this, 500, 500);
     // this.hud = new HUD(this, 40, 40, 40, 40, 40, 40);
 
     this.physics.add.collider(this.player.sprite, worldLayer);
     this.physics.add.collider(this.spikeball.sprite, worldLayer);
-    this.physics.add.collider(this.spikyball.sprite, worldLayer);
-    this.physics.add.collider(this.spikyball.sprite, this.spikeball.sprite);
     this.physics.add.collider(
       this.player.sprite,
       this.spikeball.sprite,
@@ -54,13 +63,7 @@ export default class TownScene extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.collider(
-      this.player.sprite,
-      this.spikyball.sprite,
-      this.hitBall,
-      null,
-      this
-    );
+
     // this.physics.add.collider(this.bombs, worldLayer);
     const camera = this.cameras.main;
 
@@ -87,7 +90,11 @@ export default class TownScene extends Phaser.Scene {
       this.playerHasReachedDoor = false;
       console.log('farts');
       this.scene.stop('ArenaScene');
-      this.scene.start('TownScene');
+      this.scene.start('TownScene', {
+        x: 1344,
+        y: 234,
+        health: this.player.health
+      });
     });
 
     //Save for scene switch debugging

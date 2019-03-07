@@ -13001,7 +13001,8 @@ class Player {
     //   .sprite(x, y, 'atlas', 'Character_Down.000.png')
     //   .setSize(16, 16);
 
-    this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'adventure-sprite-anims 0.ase').setSize(16, 16);
+    this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'adventure-sprite-anims 0.ase').setSize(8, 12);
+    this.sprite.body.offset.y = 12;
     this.health = 100;
     this.playerIsAlive = true;
     this.sprite.setScale(3); // this.sprite.anims.play('character-walk-down');
@@ -13024,27 +13025,24 @@ class Player {
 
     if (keys.left.isDown) {
       sprite.body.setVelocityX(-speed);
-    }
-
-    if (keys.right.isDown) {
+    } else if (keys.right.isDown) {
       sprite.body.setVelocityX(speed);
     } // Vertical movement
 
 
     if (keys.up.isDown) {
       sprite.body.setVelocityY(-speed);
-    }
-
-    if (keys.down.isDown) {
+    } else if (keys.down.isDown) {
       sprite.body.setVelocityY(speed);
     } // Normalize and scale the velocity so that player can't move faster along a diagonal
 
 
     sprite.body.velocity.normalize().scale(speed); // Update the animation last and give left/right animations precedence over up/down animations
+    // if (this.attackKey.isDown) {
+    //   this.attack();
+    // } else
 
-    if (this.attackKey.isDown) {
-      this.attack();
-    } else if (keys.left.isDown) {
+    if (keys.left.isDown) {
       this.playAnim('character-walk-left');
     } else if (keys.right.isDown) {
       this.playAnim('character-walk-right');
@@ -13119,6 +13117,169 @@ class Player {
 
 /***/ }),
 
+/***/ "./src/player/weapon.js":
+/*!******************************!*\
+  !*** ./src/player/weapon.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Player; });
+// (FREE = 0), (ROOTED = 1), (KNOCKED_BACK = 2);
+// (DEFAULT = 0), (ATTACKING = 1), (ATTACKED = 2), (DEATH = 3);
+class Player {
+  constructor(scene, x, y) {
+    this.scene = scene;
+    const anims = scene.anims; //Demo weapon anims
+
+    anims.create({
+      key: 'weapon-slash-down',
+      frames: anims.generateFrameNames('weaponatlas', {
+        prefix: 'Sword_DownLeft-',
+        start: 0,
+        end: 3,
+        zeroPad: 0,
+        suffix: '.png'
+      }),
+      frameRate: 10,
+      repeat: 0
+    });
+    anims.create({
+      key: 'weapon-slash-left',
+      frames: anims.generateFrameNames('weaponatlas', {
+        prefix: 'Sword_UpLeft-',
+        start: 0,
+        end: 3,
+        zeroPad: 0,
+        suffix: '.png'
+      }),
+      frameRate: 10,
+      repeat: 0
+    });
+    anims.create({
+      key: 'weapon-slash-up',
+      frames: anims.generateFrameNames('weaponatlas', {
+        prefix: 'Sword_UpRight-',
+        start: 0,
+        end: 3,
+        zeroPad: 0,
+        suffix: '.png'
+      }),
+      frameRate: 10,
+      repeat: 0
+    });
+    anims.create({
+      key: 'weapon-slash-right',
+      frames: anims.generateFrameNames('weaponatlas', {
+        prefix: 'Sword_DownRight-',
+        start: 0,
+        end: 3,
+        zeroPad: 0,
+        suffix: '.png'
+      }),
+      frameRate: 10,
+      repeat: 0
+    });
+    this.attackAnimationTime = 400;
+    this.attackTime = 500;
+    this.movementState = 'FREE';
+    this.animationState = 'DEFAULT';
+    this.sprite = scene.physics.add.sprite(x, y, 'weaponatlas', 'Sword_DownLeft-0.png').setSize(8, 12); // this.sprite.body.offset.y = 12;
+    // this.sprite.anims.play('character-walk-down');
+
+    this.sprite.body.setVelocity(0);
+    this.keys = scene.input.keyboard.createCursorKeys(); // this.attackKey = scene.input.keyboard.addKey(
+    //   Phaser.Input.Keyboard.KeyCodes.SPACE
+    // );
+
+    scene.input.keyboard.on('keydown-SPACE', callback => {
+      this.attack();
+    }, this);
+  }
+
+  freeze() {
+    this.sprite.body.moves = false;
+  }
+
+  update() {
+    const keys = this.keys;
+    const sprite = this.sprite;
+    const speed = 400; // const prevVelocity = sprite.body.velocity.clone();
+
+    sprite.body.setVelocity(0);
+    var currentAnim = this.sprite.anims.currentAnim;
+    var direction = 'stop'; // Horizontal movement
+
+    if (keys.left.isDown) {
+      sprite.body.setVelocityX(-speed);
+      console.log(this.sprite);
+      direction = 'left';
+    } else if (keys.right.isDown) {
+      sprite.body.setVelocityX(speed);
+      direction = 'right';
+    } // Vertical movement
+
+
+    if (keys.up.isDown) {
+      sprite.body.setVelocityY(-speed);
+      direction = 'up';
+    } else if (keys.down.isDown) {
+      sprite.body.setVelocityY(speed);
+      direction = 'down';
+    } // Normalize and scale the velocity so that player can't move faster along a diagonal
+
+
+    sprite.body.velocity.normalize().scale(speed); // Update the animation last and give left/right animations precedence over up/down animations
+    //     if (this.attackKey.isDown) {
+    //       //   this.attack();
+    //     } else {
+    //       this.idle();
+    //     }
+  }
+
+  destroy() {
+    this.sprite.destroy();
+  }
+
+  playAttack(key) {
+    const anims = this.sprite.anims;
+    anims.play(key, false);
+  }
+
+  attack() {
+    console.log(this.sprite); //Prevents body from moving during attack anim
+
+    this.sprite.body.setVelocity(0);
+
+    if (this.sprite.body.facing === 13) {
+      this.playAttack('weapon-slash-left');
+    } else if (this.sprite.body.facing === 14) {
+      this.playAttack('weapon-slash-right');
+    } else if (this.sprite.body.facing === 11) {
+      this.playAttack('weapon-slash-up');
+    } else if (this.sprite.body.facing === 12) {
+      this.playAttack('weapon-slash-down');
+    }
+  }
+
+  idle() {
+    this.sprite.anims.stop(); // If we were moving, pick an idle frame to use
+    // if (this.sprite.body.facing === 13)
+    //   this.sprite.setTexture('atlas', 'adventure-sprite-anims 20.ase');
+    // else if (this.sprite.body.facing === 14)
+    //   this.sprite.setTexture('atlas', 'adventure-sprite-anims 14.ase');
+    // else if (this.sprite.body.facing === 11)
+    //   this.sprite.setTexture('atlas', 'adventure-sprite-anims 6.ase');
+    // else if (this.sprite.body.facing === 12)
+    //   this.sprite.setTexture('atlas', 'adventure-sprite-anims 0.ase');
+  }
+
+}
+
+/***/ }),
+
 /***/ "./src/scenes/ArenaScene.js":
 /*!**********************************!*\
   !*** ./src/scenes/ArenaScene.js ***!
@@ -13128,7 +13289,7 @@ class Player {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TownScene; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ArenaScene; });
 /* harmony import */ var _player_player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player/player.js */ "./src/player/player.js");
 /* harmony import */ var _enemies_Spikeball__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enemies/Spikeball */ "./src/enemies/Spikeball.js");
 /* harmony import */ var _HUD_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../HUD.js */ "./src/HUD.js");
@@ -13139,11 +13300,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class TownScene extends Phaser.Scene {
+class ArenaScene extends Phaser.Scene {
   constructor() {
     super({
       key: 'ArenaScene'
     });
+  }
+
+  ArenaScene() {
+    Phaser.Scene.call(this, {
+      key: 'arenascene'
+    });
+  }
+
+  init(data) {
+    this.transferredData = data;
+    console.log(data);
   }
 
   preload() {
@@ -13171,15 +13343,16 @@ class TownScene extends Phaser.Scene {
     aboveLayer.setDepth(10);
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
     this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
-    this.spikeball = new _enemies_Spikeball__WEBPACK_IMPORTED_MODULE_1__["default"](this, 400, 400);
-    this.spikyball = new _enemies_Spikeball__WEBPACK_IMPORTED_MODULE_1__["default"](this, 500, 500); // this.hud = new HUD(this, 40, 40, 40, 40, 40, 40);
+
+    if (this.transferredData.health) {
+      this.player.health = this.transferredData.health;
+    }
+
+    this.spikeball = new _enemies_Spikeball__WEBPACK_IMPORTED_MODULE_1__["default"](this, 400, 400); // this.hud = new HUD(this, 40, 40, 40, 40, 40, 40);
 
     this.physics.add.collider(this.player.sprite, worldLayer);
     this.physics.add.collider(this.spikeball.sprite, worldLayer);
-    this.physics.add.collider(this.spikyball.sprite, worldLayer);
-    this.physics.add.collider(this.spikyball.sprite, this.spikeball.sprite);
-    this.physics.add.collider(this.player.sprite, this.spikeball.sprite, this.hitBall, null, this);
-    this.physics.add.collider(this.player.sprite, this.spikyball.sprite, this.hitBall, null, this); // this.physics.add.collider(this.bombs, worldLayer);
+    this.physics.add.collider(this.player.sprite, this.spikeball.sprite, this.hitBall, null, this); // this.physics.add.collider(this.bombs, worldLayer);
 
     const camera = this.cameras.main; // Debug graphics
 
@@ -13204,7 +13377,11 @@ class TownScene extends Phaser.Scene {
       this.playerHasReachedDoor = false;
       console.log('farts');
       this.scene.stop('ArenaScene');
-      this.scene.start('TownScene');
+      this.scene.start('TownScene', {
+        x: 1344,
+        y: 234,
+        health: this.player.health
+      });
     }); //Save for scene switch debugging
 
     this.input.keyboard.once('keydown_D', event => {// this.scene.stop('ArenaScene');
@@ -13307,12 +13484,8 @@ class BootScene extends Phaser.Scene {
     //   '../assets/player-anim.json'
     // );
 
-    this.load.atlas('atlas', '../assets/adventure-sprite-anims.png', '../assets/adventure-anims.json'); // this.load.atlas(
-    //   'atlas',
-    //   '../assets/weapon-anims.png',
-    //   '../assets/weapon-anims.json'
-    // );
-    //Loading assets for title screen && HUD
+    this.load.atlas('atlas', '../assets/adventure-sprite-anims.png', '../assets/adventure-anims.json');
+    this.load.atlas('weaponatlas', '../assets/weapon-anims.png', '../assets/weapon-anims.json'); //Loading assets for title screen && HUD
 
     this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
   }
@@ -13397,6 +13570,8 @@ class TitleScene extends Phaser.Scene {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TownScene; });
 /* harmony import */ var _player_player_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../player/player.js */ "./src/player/player.js");
+/* harmony import */ var _player_weapon_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../player/weapon.js */ "./src/player/weapon.js");
+
 
 class TownScene extends Phaser.Scene {
   constructor() {
@@ -13405,14 +13580,31 @@ class TownScene extends Phaser.Scene {
     });
   }
 
+  TownScene() {
+    Phaser.Scene.call(this, {
+      key: 'townscene'
+    });
+  }
+
+  init(data) {
+    this.transferredData = data;
+    console.log(data);
+  }
+
   preload() {}
 
   create() {
+    console.log(this);
     this.playerHasReachedDoor = false;
     const map = this.make.tilemap({
       key: 'map'
-    }); // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
+    });
+
+    if (this.transferredData.x) {
+      console.log(this.transferredData.x, this.transferredData.y);
+    } // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
+
 
     const tileset = map.addTilesetImage('mage-tileset', 'tiles'); // Parameters: layer name (or index) from Tiled, tileset, x, y
 
@@ -13427,14 +13619,28 @@ class TownScene extends Phaser.Scene {
 
     aboveLayer.setDepth(10);
     const spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn Point');
-    this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
+    this.playerStack = this.physics.add.group(); // Handle spawn point if player leaves arena
+
+    if (this.transferredData.x && this.transferredData.y) {
+      this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, this.transferredData.x, this.transferredData.y);
+      this.weapon = new _player_weapon_js__WEBPACK_IMPORTED_MODULE_1__["default"](this, this.transferredData.x, this.transferredData.y);
+    } else {
+      this.player = new _player_player_js__WEBPACK_IMPORTED_MODULE_0__["default"](this, spawnPoint.x, spawnPoint.y);
+      this.weapon = new _player_weapon_js__WEBPACK_IMPORTED_MODULE_1__["default"](this, spawnPoint.x, spawnPoint.y);
+    }
+
+    if (this.transferredData.health) {
+      this.player.health = this.transferredData.health;
+    }
+
     this.physics.add.collider(this.player.sprite, worldLayer);
+    this.physics.add.collider(this.weapon.sprite, worldLayer);
     const camera = this.cameras.main; // Debug graphics
 
     this.input.keyboard.once('keydown_F', event => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
-      console.log(this.player, worldLayer); // Create worldLayer collision graphic above the player, but below the help text
+      console.log(this.player.sprite); // Create worldLayer collision graphic above the player, but below the help text
 
       const graphics = this.add.graphics().setAlpha(0.75).setDepth(20);
       worldLayer.renderDebug(graphics, {
@@ -13460,19 +13666,22 @@ class TownScene extends Phaser.Scene {
       camera.fade(250, 0, 0, 0);
       camera.once('camerafadeoutcomplete', () => {
         this.scene.stop('TownScene');
-        this.scene.start('ArenaScene');
+        this.scene.start('ArenaScene', {
+          health: this.player.health
+        });
       });
     }); // Create HUD
 
     this.createHUD(); // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
 
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    camera.startFollow(this.player.sprite);
+    camera.startFollow(this.player.sprite, this.weapon.sprite);
   }
 
   update(time, delta) {
     if (this.playerHasReachedDoor) return;
     this.player.update();
+    this.weapon.update();
   }
 
   createHUD() {

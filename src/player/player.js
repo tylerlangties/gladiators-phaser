@@ -158,7 +158,9 @@ export default class Player {
 
     this.sprite = scene.physics.add
       .sprite(x, y, 'atlas', 'adventure-sprite-anims 0.ase')
-      .setSize(16, 16);
+      .setSize(8, 12);
+
+    this.sprite.body.offset.y = 12;
 
     this.health = 100;
     this.playerIsAlive = true;
@@ -188,17 +190,13 @@ export default class Player {
     // Horizontal movement
     if (keys.left.isDown) {
       sprite.body.setVelocityX(-speed);
-    }
-
-    if (keys.right.isDown) {
+    } else if (keys.right.isDown) {
       sprite.body.setVelocityX(speed);
     }
     // Vertical movement
     if (keys.up.isDown) {
       sprite.body.setVelocityY(-speed);
-    }
-
-    if (keys.down.isDown) {
+    } else if (keys.down.isDown) {
       sprite.body.setVelocityY(speed);
     }
 
@@ -206,9 +204,10 @@ export default class Player {
     sprite.body.velocity.normalize().scale(speed);
 
     // Update the animation last and give left/right animations precedence over up/down animations
-    if (this.attackKey.isDown) {
-      this.attack();
-    } else if (keys.left.isDown) {
+    // if (this.attackKey.isDown) {
+    //   this.attack();
+    // } else
+    if (keys.left.isDown) {
       this.playAnim('character-walk-left');
     } else if (keys.right.isDown) {
       this.playAnim('character-walk-right');

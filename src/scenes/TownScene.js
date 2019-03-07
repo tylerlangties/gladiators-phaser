@@ -1,4 +1,5 @@
 import Player from '../player/player.js';
+import Weapon from '../player/weapon.js';
 
 export default class TownScene extends Phaser.Scene {
   constructor() {
@@ -7,11 +8,24 @@ export default class TownScene extends Phaser.Scene {
     });
   }
 
+  TownScene() {
+    Phaser.Scene.call(this, { key: 'townscene' });
+  }
+  init(data) {
+    this.transferredData = data;
+    console.log(data);
+  }
+
   preload() {}
 
   create() {
+    console.log(this);
     this.playerHasReachedDoor = false;
     const map = this.make.tilemap({ key: 'map' });
+
+    if (this.transferredData.x) {
+      console.log(this.transferredData.x, this.transferredData.y);
+    }
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -23,7 +37,6 @@ export default class TownScene extends Phaser.Scene {
     const aboveLayer = map.createDynamicLayer('Above Player', tileset, 0, 0);
 
     worldLayer.setCollisionByProperty({ collides: true });
-
     // By default, everything gets depth sorted on the screen in the order we created things. Here, we
     // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
     // Higher depths will sit on top of lower depth objects.
@@ -34,15 +47,37 @@ export default class TownScene extends Phaser.Scene {
       obj => obj.name === 'Spawn Point'
     );
 
-    this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+    this.playerStack = this.physics.add.group();
+
+    // Handle spawn point if player leaves arena
+    if (this.transferredData.x && this.transferredData.y) {
+      this.player = new Player(
+        this,
+        this.transferredData.x,
+        this.transferredData.y
+      );
+      this.weapon = new Weapon(
+        this,
+        this.transferredData.x,
+        this.transferredData.y
+      );
+    } else {
+      this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+      this.weapon = new Weapon(this, spawnPoint.x, spawnPoint.y);
+    }
+    if (this.transferredData.health) {
+      this.player.health = this.transferredData.health;
+    }
+
     this.physics.add.collider(this.player.sprite, worldLayer);
+    this.physics.add.collider(this.weapon.sprite, worldLayer);
     const camera = this.cameras.main;
 
     // Debug graphics
     this.input.keyboard.once('keydown_F', event => {
       // Turn on physics debugging to show player's hitbox
       this.physics.world.createDebugGraphic();
-      console.log(this.player, worldLayer);
+      console.log(this.player.sprite);
       // Create worldLayer collision graphic above the player, but below the help text
       const graphics = this.add
         .graphics()
@@ -70,7 +105,7 @@ export default class TownScene extends Phaser.Scene {
       camera.fade(250, 0, 0, 0);
       camera.once('camerafadeoutcomplete', () => {
         this.scene.stop('TownScene');
-        this.scene.start('ArenaScene');
+        this.scene.start('ArenaScene', { health: this.player.health });
       });
     });
 
@@ -79,12 +114,13 @@ export default class TownScene extends Phaser.Scene {
 
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    camera.startFollow(this.player.sprite);
+    camera.startFollow(this.player.sprite, this.weapon.sprite);
   }
   update(time, delta) {
     if (this.playerHasReachedDoor) return;
 
     this.player.update();
+    this.weapon.update();
   }
 
   createHUD() {

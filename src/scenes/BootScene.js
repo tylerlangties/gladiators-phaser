@@ -46,11 +46,11 @@ class BootScene extends Phaser.Scene {
       '../assets/adventure-anims.json'
     );
 
-    // this.load.atlas(
-    //   'atlas',
-    //   '../assets/weapon-anims.png',
-    //   '../assets/weapon-anims.json'
-    // );
+    this.load.atlas(
+      'weaponatlas',
+      '../assets/weapon-anims.png',
+      '../assets/weapon-anims.json'
+    );
 
     //Loading assets for title screen && HUD
     this.load.bitmapFont(
