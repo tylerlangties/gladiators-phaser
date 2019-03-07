@@ -13004,7 +13004,7 @@ class Player {
     this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'adventure-sprite-anims 0.ase').setSize(16, 16);
     this.health = 100;
     this.playerIsAlive = true;
-    this.sprite.setScale(1.4); // this.sprite.anims.play('character-walk-down');
+    this.sprite.setScale(2); // this.sprite.anims.play('character-walk-down');
 
     this.sprite.body.setVelocity(0);
     this.keys = scene.input.keyboard.createCursorKeys();

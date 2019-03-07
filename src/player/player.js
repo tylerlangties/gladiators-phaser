@@ -163,7 +163,7 @@ export default class Player {
     this.health = 100;
     this.playerIsAlive = true;
 
-    this.sprite.setScale(1.4);
+    this.sprite.setScale(2);
 
     // this.sprite.anims.play('character-walk-down');
     this.sprite.body.setVelocity(0);
