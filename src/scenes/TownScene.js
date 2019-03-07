@@ -6,6 +6,7 @@ export default class TownScene extends Phaser.Scene {
       key: 'TownScene'
     });
   }
+
   preload() {}
 
   create() {

@@ -13004,7 +13004,7 @@ class Player {
     this.sprite = scene.physics.add.sprite(x, y, 'atlas', 'adventure-sprite-anims 0.ase').setSize(16, 16);
     this.health = 100;
     this.playerIsAlive = true;
-    this.sprite.setScale(2); // this.sprite.anims.play('character-walk-down');
+    this.sprite.setScale(3); // this.sprite.anims.play('character-walk-down');
 
     this.sprite.body.setVelocity(0);
     this.keys = scene.input.keyboard.createCursorKeys();
@@ -13018,7 +13018,7 @@ class Player {
   update() {
     const keys = this.keys;
     const sprite = this.sprite;
-    const speed = 300;
+    const speed = 400;
     const prevVelocity = sprite.body.velocity.clone();
     sprite.body.setVelocity(0); // Horizontal movement
 
@@ -13112,7 +13112,7 @@ class Player {
   idle() {
     this.sprite.anims.stop(); // If we were moving, pick an idle frame to use
 
-    if (this.sprite.body.facing === 13) this.sprite.setTexture('atlas', 'Character_Left.000.png');else if (this.sprite.body.facing === 14) this.sprite.setTexture('atlas', 'Character_Right.000.png');else if (this.sprite.body.facing === 11) this.sprite.setTexture('atlas', 'Character_Up.000.png');else if (this.sprite.body.facing === 12) this.sprite.setTexture('atlas', 'Character_Down.000.png');
+    if (this.sprite.body.facing === 13) this.sprite.setTexture('atlas', 'adventure-sprite-anims 20.ase');else if (this.sprite.body.facing === 14) this.sprite.setTexture('atlas', 'adventure-sprite-anims 14.ase');else if (this.sprite.body.facing === 11) this.sprite.setTexture('atlas', 'adventure-sprite-anims 6.ase');else if (this.sprite.body.facing === 12) this.sprite.setTexture('atlas', 'adventure-sprite-anims 0.ase');
   }
 
 }
