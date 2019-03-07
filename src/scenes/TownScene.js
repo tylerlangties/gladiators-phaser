@@ -56,8 +56,8 @@ export default class TownScene extends Phaser.Scene {
 
     //Debugging for scene switching
     this.input.keyboard.once('keydown_D', () => {
-      // this.scene.stop('TownScene');
-      // this.scene.start('ArenaScene');
+      this.scene.stop('TownScene');
+      this.scene.start('ArenaScene');
       console.log(this.player.sprite.x);
     });
 

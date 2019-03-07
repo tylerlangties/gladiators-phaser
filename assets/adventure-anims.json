@@ -1,0 +1,210 @@
+{
+  "frames": {
+    "adventure-sprite-anims 0.ase": {
+      "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 1.ase": {
+      "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 2.ase": {
+      "frame": { "x": 64, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 3.ase": {
+      "frame": { "x": 96, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 4.ase": {
+      "frame": { "x": 128, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 5.ase": {
+      "frame": { "x": 160, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 6.ase": {
+      "frame": { "x": 192, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 7.ase": {
+      "frame": { "x": 224, "y": 0, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 8.ase": {
+      "frame": { "x": 0, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 9.ase": {
+      "frame": { "x": 32, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 10.ase": {
+      "frame": { "x": 64, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 11.ase": {
+      "frame": { "x": 96, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 12.ase": {
+      "frame": { "x": 128, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 13.ase": {
+      "frame": { "x": 160, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 14.ase": {
+      "frame": { "x": 192, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 15.ase": {
+      "frame": { "x": 224, "y": 32, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 16.ase": {
+      "frame": { "x": 0, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 17.ase": {
+      "frame": { "x": 32, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 18.ase": {
+      "frame": { "x": 64, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 19.ase": {
+      "frame": { "x": 96, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 20.ase": {
+      "frame": { "x": 128, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 21.ase": {
+      "frame": { "x": 160, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 22.ase": {
+      "frame": { "x": 192, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    },
+    "adventure-sprite-anims 23.ase": {
+      "frame": { "x": 224, "y": 64, "w": 32, "h": 32 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+      "sourceSize": { "w": 32, "h": 32 },
+      "duration": 100
+    }
+  },
+  "meta": {
+    "app": "http://www.aseprite.org/",
+    "version": "1.1.8-dev",
+    "image": "/home/bill/sprite-dev/adventure-sprite-anims.png",
+    "format": "RGBA8888",
+    "size": { "w": 256, "h": 128 },
+    "scale": "1",
+    "frameTags": [
+      { "name": "run-front", "from": 0, "to": 5, "direction": "forward" },
+      { "name": "run-back", "from": 6, "to": 11, "direction": "forward" },
+      { "name": "run-right", "from": 12, "to": 17, "direction": "forward" },
+      { "name": "run-left", "from": 18, "to": 23, "direction": "forward" }
+    ]
+  }
+}

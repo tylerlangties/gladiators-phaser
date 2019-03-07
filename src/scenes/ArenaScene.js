@@ -1,4 +1,7 @@
 import Player from '../player/player.js';
+import SpikeBall from '../enemies/Spikeball';
+import HUD from '../HUD.js';
+import { ReactiveTest } from 'rx';
 
 export default class TownScene extends Phaser.Scene {
   constructor() {
@@ -6,10 +9,13 @@ export default class TownScene extends Phaser.Scene {
       key: 'ArenaScene'
     });
   }
-  preload() {}
+  preload() {
+    this.load.image('spikeball', '../../assets/spike-ball.png');
+  }
 
   create() {
     const map = this.make.tilemap({ key: 'arenamap' });
+    let gameOver = false;
 
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -33,7 +39,29 @@ export default class TownScene extends Phaser.Scene {
     );
 
     this.player = new Player(this, spawnPoint.x, spawnPoint.y);
+    this.spikeball = new SpikeBall(this, 400, 400);
+    this.spikyball = new SpikeBall(this, 500, 500);
+    // this.hud = new HUD(this, 40, 40, 40, 40, 40, 40);
+
     this.physics.add.collider(this.player.sprite, worldLayer);
+    this.physics.add.collider(this.spikeball.sprite, worldLayer);
+    this.physics.add.collider(this.spikyball.sprite, worldLayer);
+    this.physics.add.collider(this.spikyball.sprite, this.spikeball.sprite);
+    this.physics.add.collider(
+      this.player.sprite,
+      this.spikeball.sprite,
+      this.hitBall,
+      null,
+      this
+    );
+    this.physics.add.collider(
+      this.player.sprite,
+      this.spikyball.sprite,
+      this.hitBall,
+      null,
+      this
+    );
+    // this.physics.add.collider(this.bombs, worldLayer);
     const camera = this.cameras.main;
 
     // Debug graphics
@@ -68,8 +96,16 @@ export default class TownScene extends Phaser.Scene {
       // this.scene.start('TownScene');
     });
 
+    // var ball = this.spikeball.create(100, 100, 'spikeball');
+    // ball.setBounce(1);
+    // ball.setCollideWorldBounds(true);
+    // ball.setVelocity(Phaser.Math.Between(200, 300), 20);
+    // ball.allowGravity = false;
+    // ball.body.setCircle(120);
+    // ball.setSize(225, 225);
+
     // Create HUD
-    this.createHUD();
+    this.createHUD(this.player.health);
 
     // Constrain the camera so that it isn't allowed to move outside the width/height of tilemap
     camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -77,26 +113,41 @@ export default class TownScene extends Phaser.Scene {
   }
   update(time, delta) {
     this.player.update();
+
+    if (this.player.playerIsAlive === false) {
+      alert('Game Over');
+      this.scene.restart();
+    }
   }
 
-  createHUD() {
+  hitBall(player, bomb) {
+    console.log('farts');
+    this.player.health = this.player.health - 20;
+    console.log(this.player.health);
+    this.createHUD(this.player.health);
+  }
+
+  createHUD(playerHealth) {
     var rect = new Phaser.Geom.Rectangle(5, 5, 58, 28);
 
     var graphics = this.add.graphics({
       fillStyle: { color: 0x0000ff, alpha: 0.35 }
     });
+    graphics.setDepth(12);
 
     graphics.fillRectShape(rect);
 
     graphics.setScrollFactor(0, 0);
 
-    const hud = this.add.bitmapText(10, 10, 'font', 'HEALTH', 8);
+    let hud = this.add.bitmapText(10, 10, 'font', 'HEALTH', 8);
     hud.setScrollFactor(0, 0);
+    hud.setDepth(12);
 
     this.health = {
       pts: 0,
-      textObject: this.add.bitmapText(10, 20, 'font', '100', 8)
+      textObject: this.add.bitmapText(10, 20, 'font', playerHealth, 8)
     };
     this.health.textObject.setScrollFactor(0, 0);
+    this.health.textObject.setDepth(12);
   }
 }
